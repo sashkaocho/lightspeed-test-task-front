@@ -1,7 +1,19 @@
-import { createApp } from "vue";
-import "./style.css";
-import App from "./App.vue";
+import "./style.css"
+import { createApp } from "vue"
+import App from "./App.vue"
 
-const app = createApp(App);
+Ecwid.OnPageLoaded.add((page: EcwidPage): void => {
+  if (page.type === "CART") {
+    const cartContainer = document.querySelector(".ec-store__content-wrapper")
 
-app.mount("#my-store-101560752");
+    if (cartContainer) {
+      const vueMountPoint = document.createElement("div")
+
+      vueMountPoint.id = "app"
+      cartContainer.insertBefore(vueMountPoint, cartContainer.children[1])
+
+      const app = createApp(App)
+      app.mount("#app")
+    }
+  }
+})
