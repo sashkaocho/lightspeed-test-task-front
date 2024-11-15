@@ -2,7 +2,6 @@
 import { h, onMounted, render } from "vue"
 import { useRouter } from "vue-router"
 import RecentlyUpdatedProductsWidget from "@/components/RecentlyUpdatedProductsWidget.vue"
-import { storeId } from "@/constants/store.ts"
 
 const router = useRouter()
 
@@ -27,7 +26,7 @@ function addWidgetToStoreCartView() {
 }
 
 onMounted(() => {
-  xProductBrowser(`id=my-store-${storeId}`)
+  xProductBrowser(`id=my-store-${import.meta.env.VITE_EDWID_STORE_ID}`)
 
   Ecwid.OnPageLoaded.add((page: EcwidPage): void => {
     if (page.type === "CART") {
