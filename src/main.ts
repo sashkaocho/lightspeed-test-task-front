@@ -1,19 +1,10 @@
 import "./style.css"
 import { createApp } from "vue"
 import App from "./App.vue"
+import router from "./router"
 
-Ecwid.OnPageLoaded.add((page: EcwidPage): void => {
-  if (page.type === "CART") {
-    const cartContainer = document.querySelector(".ec-store__content-wrapper")
+const app = createApp(App)
 
-    if (cartContainer) {
-      const vueMountPoint = document.createElement("div")
+app.use(router)
 
-      vueMountPoint.id = "app"
-      cartContainer.insertBefore(vueMountPoint, cartContainer.children[1])
-
-      const app = createApp(App)
-      app.mount("#app")
-    }
-  }
-})
+app.mount("#app")

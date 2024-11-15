@@ -1,35 +1,15 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue"
-import axios from "axios"
 import { IProduct } from "../ts/product.types.ts"
-
-const storeId = import.meta.env.VITE_STORE_ID
-const token = import.meta.env.VITE_TOKEN
+import { fetchRecentlyUpdatedProducts } from "@/helpers/products.ts"
 
 const products = ref<IProduct[]>([])
-const numberOfProducts = ref<number>(8)
+const showedProductsLength = ref<number>(8)
 const selectedOrder = ref<string>("recently updated")
 
 const displayedProducts = computed<IProduct[]>(() => {
-  return products.value.slice(0, numberOfProducts.value)
+  return products.value.slice(0, showedProductsLength.value)
 })
-
-async function fetchRecentlyUpdatedProducts(): Promise<void> {
-  try {
-    const response = await axios.get(
-      `https://app.ecwid.com/api/v3/${storeId}/products`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      },
-    )
-    products.value = response.data.items
-    console.log(products.value)
-  } catch (error) {
-    console.error("Error fetching products:", error)
-  }
-}
 
 function orderBy(): void {
   switch (selectedOrder.value) {
@@ -47,6 +27,15 @@ function orderBy(): void {
   }
 }
 
+watch(showedProductsLength, (value) => {
+  localStorage.setItem("showedProductsLength", value)
+})
+
+watch(selectedOrder, orderBy)
+
+// this function is checking is product recently updated. this is not my ecwid store, so I can't update it. I'm not using it because
+// other products will not be shown. in orderBy function products are sorted with updated timestamp and first it need to check if it is updated.
+// I simply can't test it because if I create account on ecwid, it will not let me to fetch product unless I upgrade my account.
 function isRecentlyUpdated(product): boolean {
   return product.updateTimestamp > product.createTimestamp
 }
@@ -60,10 +49,15 @@ function addToCart(product): void {
 }
 
 onMounted(async () => {
-  await fetchRecentlyUpdatedProducts()
-})
+  products.value = await fetchRecentlyUpdatedProducts()
 
-watch(selectedOrder, orderBy)
+  const productsLength = localStorage.getItem("showedProductsLength")
+  if (!productsLength) {
+    localStorage.setItem("showedProductsLength", showedProductsLength.value)
+  } else {
+    showedProductsLength.value = productsLength as number
+  }
+})
 </script>
 
 <template>
@@ -73,7 +67,7 @@ watch(selectedOrder, orderBy)
       <div class="flex items-center gap-5">
         <div class="flex items-center gap-2">
           <span>Number of products:</span>
-          <select class="border rounded-md" v-model="numberOfProducts">
+          <select class="border rounded-md" v-model="showedProductsLength">
             <option value="2">2</option>
             <option value="4">4</option>
             <option value="6">6</option>
@@ -108,7 +102,7 @@ watch(selectedOrder, orderBy)
         />
         <button
           @click.left="addToCart(product)"
-          class="btn btn-primary !bg-blue-700"
+          class="btn btn-primary !bg-blue-500"
         >
           Add to cart
         </button>

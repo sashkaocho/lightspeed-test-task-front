@@ -1,21 +1,23 @@
 declare global {
   interface EcwidPage {
-    type: any;
+    type: any
   }
 
   interface Ecwid {
     OnPageLoaded: {
-      add(callback: (page: EcwidPage) => void): void;
-    };
+      add(callback: (page: EcwidPage) => void): void
+    }
 
-    openPage(type: string, options: Record<string, unknown>): void;
+    openPage(type: string, options: Record<string, unknown>): void
 
     Cart: {
-      addProduct(product: any): void;
-    };
+      addProduct(product: any): void
+    }
   }
 
-  const Ecwid: Ecwid;
+  function xProductBrowser(params: string): void
+
+  const Ecwid: Ecwid
 }
 
-export {};
+export {}

@@ -1,9 +1,7 @@
-<script setup>
-import RecentlyUpdatedProducts from "@/components/RecentlyUpdatedProducts.vue"
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <div>
-    <RecentlyUpdatedProducts />
+    <RouterView />
   </div>
 </template>
