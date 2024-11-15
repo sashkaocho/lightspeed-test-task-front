@@ -1,13 +1,14 @@
 import axios from "axios"
 import { IProduct } from "../ts/product.types.ts"
+import { backendUrl, storeId, token } from "../constants/ecwidStore.ts"
 
 export async function fetchRecentlyUpdatedProducts(): Promise<any> {
   try {
     const response = await axios.get(
-      `https://app.ecwid.com/api/v3/${import.meta.env.VITE_EDWID_STORE_ID}/products`,
+      `https://app.ecwid.com/api/v3/${storeId}/products`,
       {
         headers: {
-          Authorization: `Bearer ${import.meta.env.VITE_ECWID_TOKEN}`,
+          Authorization: `Bearer ${token}`,
         },
       },
     )
@@ -27,7 +28,7 @@ export async function exportProductsToCSVFormat(
 
   try {
     const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_URL}/export-products`,
+      `${backendUrl}/export-products`,
       { products: selectedProducts },
       { responseType: "blob" },
     )

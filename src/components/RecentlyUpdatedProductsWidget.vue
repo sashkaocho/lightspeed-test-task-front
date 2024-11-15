@@ -34,8 +34,8 @@ watch(showedProductsLength, (value) => {
 watch(selectedOrder, orderBy)
 
 // this function is checking is product recently updated. this is not my ecwid store, so I can't update it. I'm not using it because
-// other products will not be shown. in orderBy function products are sorted with updated timestamp and first it need to check if it is updated.
-// I simply can't test it because if I create account on ecwid, it will not let me to fetch product unless I upgrade my account.
+// other products will not be shown. in orderBy function products are sorted with updated timestamp, and first it need to check if it is updated.
+// I simply can't test it because if I create account on ecwid, it will not let me fetch product unless I upgrade my account.
 function isRecentlyUpdated(product): boolean {
   return product.updateTimestamp > product.createTimestamp
 }
