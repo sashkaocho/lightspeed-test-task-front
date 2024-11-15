@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router"
+import EcwidStoreVIew from "../views/EcwidStoreVIew.vue"
+import SettingsView from "../views/SettingsView.vue"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -7,12 +9,12 @@ const router = createRouter({
     {
       path: "/store",
       name: "store",
-      component: () => import("@/views/EcwidStoreView.vue"),
+      component: () => EcwidStoreVIew,
     },
     {
       path: "/settings",
       name: "settings",
-      component: () => import("@/views/SettingsView.vue"),
+      component: () => SettingsView,
     },
   ],
 })
